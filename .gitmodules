@@ -1,0 +1,3 @@
+[submodule "vendor/wandb"]
+	path = vendor/wandb
+	url = https://github.com/wandb/wandb.git

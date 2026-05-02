@@ -1,0 +1,16 @@
+(library
+ (public_name wandb)
+ (name wandb)
+ (libraries yojson ocaml-protoc-plugin wandb_proto unix))
+
+(rule
+ (target wandb-core)
+ (deps
+  (source_tree ../vendor/wandb/core))
+ (action
+  (chdir %{workspace_root}/vendor/wandb/core
+   (run go build -tags disable_grpc_modules,parquet_read_only -mod=vendor -ldflags "-s -w -X main.commit=unknown" -o %{target} ./cmd/wandb-core))))
+
+(install
+ (section bin)
+ (files wandb-core))

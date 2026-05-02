@@ -1,0 +1,9 @@
+(executables
+ (names run_explicit run_global run_scope)
+ (modules run_explicit run_global run_scope)
+ (libraries wandb))
+
+(executable
+ (name run_xor)
+ (modules run_xor)
+ (libraries wandb kaun))

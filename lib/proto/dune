@@ -1,0 +1,4 @@
+(library
+ (public_name wandb.proto)
+ (name wandb_proto)
+ (libraries ocaml-protoc-plugin))
