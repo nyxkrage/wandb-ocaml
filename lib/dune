@@ -5,12 +5,30 @@
 
 (rule
  (target wandb-core)
+ (enabled_if (<> %{env:SKIP_BUILD_WANDB=0} 1))
  (deps
   (source_tree ../vendor/wandb/core))
  (action
   (chdir %{workspace_root}/vendor/wandb/core
-   (run go build -tags disable_grpc_modules,parquet_read_only -mod=vendor -ldflags "-s -w -X main.commit=unknown" -o %{target} ./cmd/wandb-core))))
+   (run go build
+        -tags disable_grpc_modules,parquet_read_only
+        -mod=vendor
+        -ldflags "-s -w -X main.commit=unknown"
+        -o %{target}
+        ./cmd/wandb-core))))
+
+(rule
+ (target wandb-core.install.sexp)
+ (enabled_if (<> %{env:SKIP_BUILD_WANDB=0} 1))
+ (action
+  (write-file %{target} "(wandb-core)")))
+
+(rule
+ (target wandb-core.install.sexp)
+ (enabled_if (= %{env:SKIP_BUILD_WANDB=0} 1))
+ (action
+  (write-file %{target} "()")))
 
 (install
  (section bin)
- (files wandb-core))
+ (files (include wandb-core.install.sexp)))
